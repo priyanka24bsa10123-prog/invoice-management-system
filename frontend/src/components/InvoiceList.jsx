@@ -1,46 +1,161 @@
 import React, { useState, useEffect } from 'react';
+import { Edit2, Trash2, AlertCircle } from 'lucide-react';
+import axios from 'axios';
 
-const InvoiceList = () => {
+const InvoiceList = ({ onEdit, refreshTrigger }) => {
     const [invoices, setInvoices] = useState([]);
     const [search, setSearch] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [deleteConfirm, setDeleteConfirm] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/invoices/')
-            .then(res => res.json())
-            .then(data => setInvoices(data));
-    }, []);
+        fetchInvoices();
+    }, [refreshTrigger]);
+
+    const fetchInvoices = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetch('http://localhost:8000/api/invoices/');
+            const data = await response.json();
+            setInvoices(data);
+        } catch (error) {
+            console.error('Error fetching invoices:', error);
+            alert('Failed to fetch invoices');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://localhost:8000/api/invoices/${id}`);
+            alert('Invoice deleted successfully!');
+            setDeleteConfirm(null);
+            fetchInvoices();
+        } catch (error) {
+            console.error('Error deleting invoice:', error);
+            alert('Failed to delete invoice');
+        }
+    };
+
+    const handleEdit = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/invoices/${id}`);
+            const invoice = await response.json();
+            onEdit(invoice);
+        } catch (error) {
+            console.error('Error fetching invoice:', error);
+            alert('Failed to fetch invoice details');
+        }
+    };
 
     const filteredInvoices = invoices.filter(inv => 
         inv.customer_name.toLowerCase().includes(search.toLowerCase())
     );
 
+    const calculateTotal = (details) => {
+        return details.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0).toFixed(2);
+    };
+
     return (
-        <div className="mt-10 p-4">
-            <h2 className="text-2xl font-bold mb-4">Invoice List</h2>
-            <input 
-                type="text" 
-                placeholder="Search by customer..." 
-                className="border p-2 mb-4 w-full"
-                onChange={(e) => setSearch(e.target.value)}
-            />
-            <table className="w-full border-collapse border">
-                <thead>
-                    <tr className="bg-gray-100">
-                        <th className="border p-2">Invoice #</th>
-                        <th className="border p-2">Customer</th>
-                        <th className="border p-2">Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredInvoices.map(inv => (
-                        <tr key={inv.id}>
-                            <td className="border p-2">{inv.invoice_number}</td>
-                            <td className="border p-2">{inv.customer_name}</td>
-                            <td className="border p-2">{inv.date}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="p-8 max-w-6xl mx-auto bg-white shadow-xl rounded-lg border border-gray-200">
+            {/* Header */}
+            <div className="mb-6">
+                <h2 className="text-3xl font-bold text-gray-800 mb-4">Invoice List</h2>
+                <input 
+                    type="text" 
+                    placeholder="Search by customer name..." 
+                    className="w-full border-2 border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    onChange={(e) => setSearch(e.target.value)}
+                    value={search}
+                />
+            </div>
+
+            {/* Loading State */}
+            {isLoading && (
+                <div className="text-center py-8 text-gray-500">Loading invoices...</div>
+            )}
+
+            {/* Empty State */}
+            {!isLoading && filteredInvoices.length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                    <p className="text-lg">No invoices found</p>
+                </div>
+            )}
+
+            {/* Table */}
+            {!isLoading && filteredInvoices.length > 0 && (
+                <div className="overflow-x-auto">
+                    <table className="w-full">
+                        <thead>
+                            <tr className="bg-blue-600 text-white">
+                                <th className="px-6 py-4 text-left font-semibold">Invoice #</th>
+                                <th className="px-6 py-4 text-left font-semibold">Customer</th>
+                                <th className="px-6 py-4 text-left font-semibold">Date</th>
+                                <th className="px-6 py-4 text-right font-semibold">Total</th>
+                                <th className="px-6 py-4 text-center font-semibold">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredInvoices.map((inv, index) => (
+                                <tr key={inv.id} className={`border-b ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-50 transition`}>
+                                    <td className="px-6 py-4 font-semibold text-gray-800">{inv.invoice_number}</td>
+                                    <td className="px-6 py-4 text-gray-700">{inv.customer_name}</td>
+                                    <td className="px-6 py-4 text-gray-700">{new Date(inv.date).toLocaleDateString()}</td>
+                                    <td className="px-6 py-4 text-right font-bold text-blue-600">
+                                        ${calculateTotal(inv.details)}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex justify-center gap-3">
+                                            <button
+                                                onClick={() => handleEdit(inv.id)}
+                                                className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-medium"
+                                            >
+                                                <Edit2 size={18} /> Edit
+                                            </button>
+                                            <button
+                                                onClick={() => setDeleteConfirm(inv.id)}
+                                                className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition font-medium"
+                                            >
+                                                <Trash2 size={18} /> Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+
+            {/* Delete Confirmation Modal */}
+            {deleteConfirm && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4 shadow-2xl">
+                        <div className="flex items-center gap-3 mb-4">
+                            <AlertCircle size={24} className="text-red-500" />
+                            <h3 className="text-xl font-bold text-gray-800">Delete Invoice</h3>
+                        </div>
+                        <p className="text-gray-600 mb-6">
+                            Are you sure you want to delete this invoice? This action cannot be undone.
+                        </p>
+                        <div className="flex gap-4">
+                            <button
+                                onClick={() => setDeleteConfirm(null)}
+                                className="flex-1 bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition font-medium"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => handleDelete(deleteConfirm)}
+                                className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition font-medium"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

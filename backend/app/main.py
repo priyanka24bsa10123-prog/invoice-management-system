@@ -40,6 +40,16 @@ def create_invoice(invoice: schemas.InvoiceCreate, db: Session = Depends(get_db)
 def read_invoices(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     return crud.get_invoices(db, skip=skip, limit=limit)
 
+# Get a single invoice by ID
+@app.get("/api/invoices/{invoice_id}", response_model=schemas.InvoiceResponse)
+def read_invoice(invoice_id: int, db: Session = Depends(get_db)):
+    return crud.get_invoice_by_id(db=db, invoice_id=invoice_id)
+
+# Update an invoice
+@app.put("/api/invoices/{invoice_id}", response_model=schemas.InvoiceResponse)
+def update_invoice(invoice_id: int, invoice_update: schemas.InvoiceCreate, db: Session = Depends(get_db)):
+    return crud.update_invoice(db=db, invoice_id=invoice_id, invoice_update=invoice_update)
+
 # Requirement: Delete functionality
 @app.delete("/api/invoices/{invoice_id}")
 def delete_invoice(invoice_id: int, db: Session = Depends(get_db)):
