@@ -1,3 +1,70 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: white;
+    color: #111827; /* gray-900 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer components {
+  /* We'll use standard CSS properties here to avoid the @apply "unknown class" error */
+
+  .invoice-header-card {
+    background-color: #c1ebcf;
+    border-radius: 0.75rem; /* rounded-xl */
+    padding: 2rem; /* p-8 */
+    margin-bottom: 1.5rem; /* mb-6 */
+  }
+
+  .selection-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem; /* gap-3 */
+    padding: 2rem; /* p-8 */
+    border-radius: 0.75rem;
+    border-width: 2px;
+    transition-property: all;
+    transition-duration: 200ms;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .selection-card-inactive {
+    background-color: white;
+    border-color: #f3f4f6; /* gray-100 */
+    color: #1f2937; /* gray-800 */
+  }
+
+  .selection-card-inactive:hover {
+    border-color: #50c878;
+  }
+
+  .selection-card-active {
+    background-color: #50c878;
+    border-color: #50c878;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+
+  .btn-emerald {
+    background-color: #50c878;
+    color: white;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    transition: background-color 0.2s;
+  }
+
+  .btn-emerald:hover {
+    background-color: #3da35e;
+  }
+}

@@ -58,14 +58,14 @@ const InvoiceList = ({ onEdit, refreshTrigger }) => {
     };
 
     return (
-        <div className="p-8 max-w-6xl mx-auto bg-white shadow-xl rounded-lg border border-gray-200">
+        <div className="space-y-6">
             {/* Header */}
-            <div className="mb-6">
-                <h2 className="text-3xl font-bold text-gray-800 mb-4">Invoice List</h2>
+            <div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Your Invoices</h2>
                 <input 
                     type="text" 
                     placeholder="Search by customer name..." 
-                    className="w-full border-2 border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full border-2 border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     onChange={(e) => setSearch(e.target.value)}
                     value={search}
                 />
@@ -73,58 +73,62 @@ const InvoiceList = ({ onEdit, refreshTrigger }) => {
 
             {/* Loading State */}
             {isLoading && (
-                <div className="text-center py-8 text-gray-500">Loading invoices...</div>
+                <div className="text-center py-8 text-gray-500 bg-white rounded-lg">
+                    <p className="text-lg">Loading invoices...</p>
+                </div>
             )}
 
             {/* Empty State */}
             {!isLoading && filteredInvoices.length === 0 && (
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-12 text-gray-500 bg-white rounded-lg">
                     <p className="text-lg">No invoices found</p>
                 </div>
             )}
 
             {/* Table */}
             {!isLoading && filteredInvoices.length > 0 && (
-                <div className="overflow-x-auto">
-                    <table className="w-full">
-                        <thead>
-                            <tr className="bg-blue-600 text-white">
-                                <th className="px-6 py-4 text-left font-semibold">Invoice #</th>
-                                <th className="px-6 py-4 text-left font-semibold">Customer</th>
-                                <th className="px-6 py-4 text-left font-semibold">Date</th>
-                                <th className="px-6 py-4 text-right font-semibold">Total</th>
-                                <th className="px-6 py-4 text-center font-semibold">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredInvoices.map((inv, index) => (
-                                <tr key={inv.id} className={`border-b ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-blue-50 transition`}>
-                                    <td className="px-6 py-4 font-semibold text-gray-800">{inv.invoice_number}</td>
-                                    <td className="px-6 py-4 text-gray-700">{inv.customer_name}</td>
-                                    <td className="px-6 py-4 text-gray-700">{new Date(inv.date).toLocaleDateString()}</td>
-                                    <td className="px-6 py-4 text-right font-bold text-blue-600">
-                                        ${calculateTotal(inv.details)}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="flex justify-center gap-3">
-                                            <button
-                                                onClick={() => handleEdit(inv.id)}
-                                                className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-medium"
-                                            >
-                                                <Edit2 size={18} /> Edit
-                                            </button>
-                                            <button
-                                                onClick={() => setDeleteConfirm(inv.id)}
-                                                className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition font-medium"
-                                            >
-                                                <Trash2 size={18} /> Delete
-                                            </button>
-                                        </div>
-                                    </td>
+                <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="w-full">
+                            <thead>
+                                <tr className="bg-gray-900 text-white">
+                                    <th className="px-6 py-4 text-left font-semibold">Invoice #</th>
+                                    <th className="px-6 py-4 text-left font-semibold">Customer</th>
+                                    <th className="px-6 py-4 text-left font-semibold">Date</th>
+                                    <th className="px-6 py-4 text-right font-semibold">Total</th>
+                                    <th className="px-6 py-4 text-center font-semibold">Action</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {filteredInvoices.map((inv, index) => (
+                                    <tr key={inv.id} className={`border-b ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-green-50 transition`}>
+                                        <td className="px-6 py-4 font-semibold text-gray-800">{inv.invoice_number}</td>
+                                        <td className="px-6 py-4 text-gray-700">{inv.customer_name}</td>
+                                        <td className="px-6 py-4 text-gray-700">{new Date(inv.date).toLocaleDateString()}</td>
+                                        <td className="px-6 py-4 text-right font-bold text-green-600">
+                                            ${calculateTotal(inv.details)}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <div className="flex justify-center gap-3">
+                                                <button
+                                                    onClick={() => handleEdit(inv.id)}
+                                                    className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition font-medium text-sm"
+                                                >
+                                                    <Edit2 size={16} /> Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => setDeleteConfirm(inv.id)}
+                                                    className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition font-medium text-sm"
+                                                >
+                                                    <Trash2 size={16} /> Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
 

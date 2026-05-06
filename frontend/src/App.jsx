@@ -5,9 +5,11 @@ import InvoiceList from './components/InvoiceList'
 function App() {
   const [editingInvoice, setEditingInvoice] = useState(null);
   const [refreshList, setRefreshList] = useState(false);
+  const [showForm, setShowForm] = useState(true);
 
   const handleEdit = (invoice) => {
     setEditingInvoice(invoice);
+    setShowForm(true);
   };
 
   const handleCloseEdit = () => {
@@ -17,37 +19,43 @@ function App() {
   const handleSaveSuccess = () => {
     setEditingInvoice(null);
     setRefreshList(!refreshList);
+    setShowForm(false);
   };
 
   return (
-    <div className="App min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Invoice Pro System</h1>
-          <p className="text-gray-600">Manage and track your invoices efficiently</p>
-        </div>
-
-        {/* Form Section */}
-        <div className="mb-12">
+    <div className="App">
+      {showForm ? (
+        <div>
           <InvoiceForm 
             editingInvoice={editingInvoice} 
             onCloseEdit={handleCloseEdit}
             onSaveSuccess={handleSaveSuccess}
           />
+          <div className="max-w-4xl mx-auto p-6">
+            <button
+              onClick={() => setShowForm(false)}
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              ← Back to Invoices
+            </button>
+          </div>
         </div>
-
-        {/* Divider */}
-        <div className="my-8 border-t-2 border-gray-300"></div>
-
-        {/* List Section */}
-        <div>
-          <InvoiceList 
-            onEdit={handleEdit}
-            refreshTrigger={refreshList}
-          />
+      ) : (
+        <div className="bg-gray-50 min-h-screen">
+          <div className="max-w-6xl mx-auto p-6">
+            <button
+              onClick={() => setShowForm(true)}
+              className="mb-6 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-semibold"
+            >
+              + New Invoice
+            </button>
+            <InvoiceList 
+              onEdit={handleEdit}
+              refreshTrigger={refreshList}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
