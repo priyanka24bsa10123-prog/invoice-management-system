@@ -65,7 +65,7 @@ const InvoiceList = ({ onEdit, refreshTrigger }) => {
                 <input 
                     type="text" 
                     placeholder="Search by customer name..." 
-                    className="w-full border-2 border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full border-2 border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     onChange={(e) => setSearch(e.target.value)}
                     value={search}
                 />
@@ -101,11 +101,11 @@ const InvoiceList = ({ onEdit, refreshTrigger }) => {
                             </thead>
                             <tbody>
                                 {filteredInvoices.map((inv, index) => (
-                                    <tr key={inv.id} className={`border-b ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-green-50 transition`}>
+                                    <tr key={inv.id} className={`border-b ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-purple-50 transition`}>
                                         <td className="px-6 py-4 font-semibold text-gray-800">{inv.invoice_number}</td>
                                         <td className="px-6 py-4 text-gray-700">{inv.customer_name}</td>
                                         <td className="px-6 py-4 text-gray-700">{new Date(inv.date).toLocaleDateString()}</td>
-                                        <td className="px-6 py-4 text-right font-bold text-green-600">
+                                        <td className="px-6 py-4 text-right font-bold text-purple-600">
                                             ${calculateTotal(inv.details)}
                                         </td>
                                         <td className="px-6 py-4">

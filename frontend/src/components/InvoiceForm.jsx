@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Plus, Trash2, Save, X, ChevronRight } from 'lucide-react';
+import { Plus, Trash2, ChevronRight } from 'lucide-react';
 
 const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
   const [invoice, setInvoice] = useState({
@@ -11,7 +11,6 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [invoiceType, setInvoiceType] = useState('single');
 
   useEffect(() => {
     if (editingInvoice) {
@@ -88,28 +87,18 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
         </div>
 
         {/* Client Section */}
-        <div className="bg-green-100 rounded-lg p-8 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">Client</label>
-              <input
-                type="text"
-                placeholder="Enter client name"
-                required
-                disabled={!!editingInvoice}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100"
-                value={invoice.customer_name}
-                onChange={(e) => setInvoice({...invoice, customer_name: e.target.value})}
-              />
-            </div>
-            <div className="flex items-end">
-              <button
-                type="button"
-                className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition flex items-center justify-center gap-2"
-              >
-                <Plus size={18} /> Add new client
-              </button>
-            </div>
+        <div className="bg-purple-100 rounded-lg p-8 mb-8">
+          <div className="mb-6">
+            <label className="block text-sm font-semibold text-gray-700 mb-3">Client</label>
+            <input
+              type="text"
+              placeholder="Enter client name"
+              required
+              disabled={!!editingInvoice}
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+              value={invoice.customer_name}
+              onChange={(e) => setInvoice({...invoice, customer_name: e.target.value})}
+            />
           </div>
 
           {/* Invoice Details Row */}
@@ -121,7 +110,7 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
                 placeholder="INV-001"
                 required
                 disabled={!!editingInvoice}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-100"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
                 value={invoice.invoice_number}
                 onChange={(e) => setInvoice({...invoice, invoice_number: e.target.value})}
               />
@@ -131,40 +120,12 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
               <input
                 type="date"
                 required
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                disabled={!!editingInvoice}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
                 value={invoice.date}
                 onChange={(e) => setInvoice({...invoice, date: e.target.value})}
               />
             </div>
-          </div>
-        </div>
-
-        {/* Invoice Type Selection */}
-        <div className="mb-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Select type of invoice</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button
-              type="button"
-              onClick={() => setInvoiceType('single')}
-              className={`p-6 rounded-lg border-2 font-semibold text-center transition ${
-                invoiceType === 'single'
-                  ? 'bg-green-500 text-white border-green-500'
-                  : 'bg-white text-gray-700 border-gray-300 hover:border-green-500'
-              }`}
-            >
-              📄 Single Invoice
-            </button>
-            <button
-              type="button"
-              onClick={() => setInvoiceType('recurring')}
-              className={`p-6 rounded-lg border-2 font-semibold text-center transition ${
-                invoiceType === 'recurring'
-                  ? 'bg-green-500 text-white border-green-500'
-                  : 'bg-white text-gray-700 border-gray-300 hover:border-green-500'
-              }`}
-            >
-              🔄 Recurring Invoice
-            </button>
           </div>
         </div>
 
@@ -199,7 +160,7 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
                     type="text"
                     placeholder="Item description"
                     required
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     value={item.description}
                     onChange={(e) => {
                       const d = [...invoice.details];
@@ -215,7 +176,7 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
                     placeholder="Qty"
                     required
                     min="1"
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     value={item.quantity}
                     onChange={(e) => {
                       const d = [...invoice.details];
@@ -232,7 +193,7 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
                     required
                     step="0.01"
                     min="0"
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     value={item.unit_price}
                     onChange={(e) => {
                       const d = [...invoice.details];
@@ -279,7 +240,7 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
             </div>
             <div className="flex justify-between items-center">
               <span className="text-lg font-bold text-gray-900">Total Amount:</span>
-              <span className="text-3xl font-bold text-green-600">${calculateTotal()}</span>
+              <span className="text-3xl font-bold text-purple-600">${calculateTotal()}</span>
             </div>
           </div>
         </div>
@@ -298,7 +259,7 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
           <button
             type="submit"
             disabled={isLoading}
-            className="px-8 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-semibold flex items-center gap-2 disabled:bg-green-400"
+            className="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-semibold flex items-center gap-2 disabled:bg-purple-400"
           >
             {isLoading ? 'Saving...' : (
               <>

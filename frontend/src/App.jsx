@@ -45,7 +45,7 @@ function App() {
           <div className="max-w-6xl mx-auto p-6">
             <button
               onClick={() => setShowForm(true)}
-              className="mb-6 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition font-semibold"
+              className="mb-6 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-semibold"
             >
               + New Invoice
             </button>
