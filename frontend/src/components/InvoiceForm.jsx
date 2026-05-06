@@ -94,8 +94,7 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
               type="text"
               placeholder="Enter client name"
               required
-              disabled={!!editingInvoice}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               value={invoice.customer_name}
               onChange={(e) => setInvoice({...invoice, customer_name: e.target.value})}
             />
@@ -109,8 +108,7 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
                 type="text"
                 placeholder="INV-001"
                 required
-                disabled={!!editingInvoice}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 value={invoice.invoice_number}
                 onChange={(e) => setInvoice({...invoice, invoice_number: e.target.value})}
               />
@@ -120,8 +118,7 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
               <input
                 type="date"
                 required
-                disabled={!!editingInvoice}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-100"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 value={invoice.date}
                 onChange={(e) => setInvoice({...invoice, date: e.target.value})}
               />
