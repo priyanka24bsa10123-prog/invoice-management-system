@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Edit2, Trash2, AlertCircle } from 'lucide-react';
-import { API_BASE_URL } from '../api';
+import { API_BASE_URL } from './api';
 import axios from 'axios';
 
 const InvoiceList = ({ onEdit, refreshTrigger }) => {
