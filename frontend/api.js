@@ -1,1 +1,1 @@
-const API_BASE_URL = "https://invoice-management-system-hg09.onrender.com";
+export const API_BASE_URL = "https://invoice-management-system-hg09.onrender.com";

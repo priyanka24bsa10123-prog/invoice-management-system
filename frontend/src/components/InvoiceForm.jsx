@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../api';
 import { Plus, Trash2, ChevronRight } from 'lucide-react';
 
 const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
@@ -52,10 +53,10 @@ const InvoiceForm = ({ editingInvoice, onCloseEdit, onSaveSuccess }) => {
     
     try {
       if (editingInvoice) {
-        await axios.put(`http://127.0.0.1:8000/api/invoices/${editingInvoice.id}`, invoice);
+        await axios.put(`${API_BASE_URL}/api/invoices/${editingInvoice.id}`, invoice);
         alert('Invoice Updated Successfully!');
       } else {
-        await axios.post('http://127.0.0.1:8000/api/invoices/', invoice);
+        await axios.post(`${API_BASE_URL}/api/invoices/`, invoice);
         alert('Invoice Saved Successfully!');
       }
       

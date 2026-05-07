@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Edit2, Trash2, AlertCircle } from 'lucide-react';
+import { API_BASE_URL } from '../api';
 import axios from 'axios';
 
 const InvoiceList = ({ onEdit, refreshTrigger }) => {
@@ -15,7 +16,7 @@ const InvoiceList = ({ onEdit, refreshTrigger }) => {
     const fetchInvoices = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('http://localhost:8000/api/invoices/');
+            const response = await fetch(`${API_BASE_URL}/api/invoices/`);
             const data = await response.json();
             setInvoices(data);
         } catch (error) {
@@ -28,7 +29,7 @@ const InvoiceList = ({ onEdit, refreshTrigger }) => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8000/api/invoices/${id}`);
+            await axios.delete(`${API_BASE_URL}/api/invoices/${id}`);
             alert('Invoice deleted successfully!');
             setDeleteConfirm(null);
             fetchInvoices();
@@ -40,7 +41,7 @@ const InvoiceList = ({ onEdit, refreshTrigger }) => {
 
     const handleEdit = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/invoices/${id}`);
+            const response = await fetch(`${API_BASE_URL}/api/invoices/${id}`);
             const invoice = await response.json();
             onEdit(invoice);
         } catch (error) {
